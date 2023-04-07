@@ -52,8 +52,8 @@ def maintenance_requests_handler(request):
             id=int(request.data.get("maintenanceRequestId"))
         )
 
-        maintenance_request.is_closed = (
-            True if request.data.get("closeMaintenanceRequest") else False
+        maintenance_request.is_closed = bool(
+            request.data.get("closeMaintenanceRequest")
         )
 
         maintenance_request.save()
@@ -110,8 +110,7 @@ def maintenanceRequestDevicesHandler(request, maintenance_request_id):
 
         maintenance_request_device.supervisor_notes = (
             request.data.get("supervisorNotes")
-            if request.data.get("supervisorNotes")
-            else maintenance_request_device.supervisor_notes
+            or maintenance_request_device.supervisor_notes
         )
 
         maintenance_request_device.engineer = (
@@ -121,9 +120,7 @@ def maintenanceRequestDevicesHandler(request, maintenance_request_id):
         )
 
         maintenance_request_device.status = (
-            request.data.get("status")
-            if request.data.get("status")
-            else maintenance_request_device.status
+            request.data.get("status") or maintenance_request_device.status
         )
 
         maintenance_request_device.save()
